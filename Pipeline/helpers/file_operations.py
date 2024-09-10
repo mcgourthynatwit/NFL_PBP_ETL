@@ -62,3 +62,29 @@ def sort_plays_to_file(df, directory):
 
             game_df.sort_values(by='Duration', inplace=True)
             game_df.to_csv(game_path, index=False)
+
+# Helper function for create_team_folders
+def make_subfolders(dir, subfolder_name, subfolders):
+    subfolder_dir = os.path.join(dir, subfolder_name)
+    os.makedirs(subfolder_dir)
+
+    for subfolder in subfolders:
+        sub_dir = os.path.join(subfolder_dir, subfolder)
+        os.makedirs(sub_dir)
+
+# Function to create team folders inside of a directory, used when creating a years blank folder for data
+def create_team_folders(source_directory, end_directory):
+    offense_subfolders = ['Passing', 'Rushing', 'Conversions']
+    defense_subfolders = ['Passing', 'Rushing', 'Conversions']
+    player_subfolders = ['Qb', 'Rb', 'Rec']
+
+    df = pd.read_csv(source_directory)
+
+    teams = get_teams(df)
+
+    for team in teams:
+        team_dir = os.path.join(end_directory, team)
+        os.makedirs(team_dir)
+        make_subfolders(team_dir, 'Offense', offense_subfolders)
+        make_subfolders(team_dir, 'Defense', defense_subfolders)
+        make_subfolders(team_dir, 'Players', player_subfolders)
