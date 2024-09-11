@@ -13,8 +13,10 @@ def split_games(source_directory, end_directory):
     df = pd.read_csv(source_directory)
 
     dropped_columns = ['Unnamed: 10', 'Unnamed: 12', 'Unnamed: 16', 'Unnamed: 17', 'IsMeasurement']
-    df = df.drop(columns = dropped_columns)
-    
+    try:
+        df = df.drop(columns = dropped_columns)
+    except Exception as e:
+        print('Columns do not exist')
     teams = get_teams(df)
 
     dates = (df['GameDate'].unique())
@@ -22,6 +24,11 @@ def split_games(source_directory, end_directory):
     dates = sorted(dates)
 
     dates_with_weeks = get_week(dates)
+
+    df['Week'] = df['GameDate'].map(dates_with_weeks)
+    
+    # Add week column to original pbp data
+    df.to_csv(source_directory, index=False)
 
     # Create week folder 1-18
     for i in range(1, 19):
@@ -33,4 +40,4 @@ def split_games(source_directory, end_directory):
 
     create_week_files(df, dates_with_weeks, end_directory)
 
-    sort_plays_to_file(df, end_directory)
+    sort_plays_to_file(df, end_directory, dates_with_weeks)

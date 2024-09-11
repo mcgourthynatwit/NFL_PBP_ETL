@@ -20,3 +20,20 @@ def fix_play_row(play):
     
     return play
 
+def organize_team_plays_defense(play_df, team):
+    defense_plays = []
+
+    for _, play in play_df.iterrows():
+        if play['DefenseTeam'] == team:
+            defense_plays.append(play)
+    
+    return pd.DataFrame(defense_plays)
+
+def organize_team_plays_offense(play_df, team):
+    offense_plays = []
+
+    for _, play in play_df.iterrows():
+        if play['OffenseTeam'] == team:
+            offense_plays.append(play)
+    
+    return pd.DataFrame(offense_plays)

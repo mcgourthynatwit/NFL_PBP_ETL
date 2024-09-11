@@ -1,4 +1,5 @@
 from Pipeline.helpers.utils_operations import calc_duration
+from Pipeline.helpers.utils_operations import get_teams
 import os 
 import pandas as pd 
 
@@ -23,13 +24,13 @@ def create_week_files(df, dates_with_weeks, week_directory):
 
     game_ids = []
 
-    for date in dates_with_weeks:
-        if date[1] is not current_week:
+    for date in dates_with_weeks.keys():
+        if dates_with_weeks[date] is not current_week:
             create_files(week_directory, str(current_week), game_ids)
             game_ids = []
             current_week += 1
         
-        games_on_date = df[df['GameDate'] == date[0]]
+        games_on_date = df[df['GameDate'] == date]
 
         for _, row in games_on_date.iterrows():
             if row['GameId'] not in game_ids:
@@ -40,7 +41,7 @@ def create_week_files(df, dates_with_weeks, week_directory):
 
 # Place plays from each game into correct file where plays are ordered from beginning to end
 # Used by: split_games.py 
-def sort_plays_to_file(df, directory):
+def sort_plays_to_file(df, directory, dates_with_weeks):
     for week in os.listdir(directory):
         week_path = os.path.join(directory, week)
 
@@ -51,8 +52,11 @@ def sort_plays_to_file(df, directory):
 
             game_df = df[df['GameId'] == int(game_id)]
             
+            game_df['GameDate'] = game_df['GameDate'].astype(str)
+
             game_df['Duration'] = game_df.apply(calc_duration, axis=1)
 
+            game_df['Week'] = game_df['GameDate'].map(dates_with_weeks)
 
             offense_team = game_df.iloc[0]['OffenseTeam']
             defense_team = game_df.iloc[0]['DefenseTeam']
