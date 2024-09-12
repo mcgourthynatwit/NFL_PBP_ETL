@@ -70,7 +70,7 @@ year = 2023
 
 print("Importing pbp data...")
 #df = nfl.import_pbp_data(years=[year], downcast=False, columns=play_cols)
-df = pd.read_csv("pbp.csv")
+df = pd.read_csv("Raw_data/pbp.csv")
 #df.to_csv("pbp.csv", index=False)
 
 print("Calling create_folders")
