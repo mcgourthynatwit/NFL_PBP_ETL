@@ -2,7 +2,7 @@
 import os 
 import pandas as pd
 from Pipeline.nfl_verse.helpers.get_teams import get_teams
-
+from Pipeline.nfl_verse.helpers.save_offense_plays import save_offense_plays
 def offense_play(play):
     offense_cols = [
         "play_id",
@@ -128,7 +128,10 @@ def organize_plays(directory, df):
         
         offense_df = pd.DataFrame(offense_plays)
         offense_df.to_csv(offense_file, index=False)
+        print(team, " offense pbp CSV saved")
 
+        save_offense_plays(offense_dir)
+        print(team, " run and pass pbp CSV saved")
         teams_complete += 1
         print(teams_complete, "/", total_teams, " offensive team plays saved.")
 
