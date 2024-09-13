@@ -107,6 +107,8 @@ def offense_play(play):
 
 def organize_plays(directory, df):
     teams = get_teams()
+    teams_complete = 0 
+    total_teams = len(teams)
 
     for team in teams:
         offense_plays = []
@@ -116,9 +118,9 @@ def organize_plays(directory, df):
         offense_dir= os.path.join(team_dir, "Offense")
         offense_file = os.path.join(offense_dir, "plays.csv")
 
-        #defense_file= os.path.join(team_dir, "Defense", "plays.csv")
+        # defense_file= os.path.join(team_dir, "Defense", "plays.csv")
 
-        #os.makedirs(defense_file)
+        # os.makedirs(defense_file)
 
         for _, play in df[df['posteam'] == team].iterrows():
             play = offense_play(play)
@@ -126,4 +128,7 @@ def organize_plays(directory, df):
         
         offense_df = pd.DataFrame(offense_plays)
         offense_df.to_csv(offense_file, index=False)
+
+        teams_complete += 1
+        print(teams_complete, "/", total_teams, " offensive team plays saved.")
 

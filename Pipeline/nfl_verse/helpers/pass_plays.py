@@ -12,4 +12,12 @@ def get_pass_play_stats(play):
     completion = 0
 
     pass_play = check_play(play)
-    return
+    
+    if pass_play is None or pass_play.empty:
+        return 0, 0, 0, 0, 0, 0, 0
+    if play['sack'] == 1 and play['penalty'] == 0 :    
+        return play['yards_gained'], 0, 0, 0, 0, 0, 0
+    if play['interception'] == 1:
+        return 0, 0, 0, 0, 1, 0, 1
+    return play['yards_gained'], play['yards_gained'], play['air_yards'], play['yards_after_catch'], 0, play['complete_pass'], 1    
+     
