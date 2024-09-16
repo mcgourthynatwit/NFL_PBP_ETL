@@ -3,6 +3,13 @@ import os
 import pandas as pd
 from Pipeline.nfl_verse.helpers.get_teams import get_teams
 from Pipeline.nfl_verse.helpers.save_offense_plays import save_offense_plays
+
+#TODO
+def defense_play(play):
+    defense_cols = []
+
+    return play[defense_cols]
+
 def offense_play(play):
     offense_cols = [
         "play_id",
@@ -112,20 +119,23 @@ def organize_plays(directory, df):
 
     for team in teams:
         offense_plays = []
-        #defense_plays = []
+        defense_plays = []
+
         team_dir = os.path.join(directory, team)
 
-        offense_dir= os.path.join(team_dir, "Offense")
+        offense_dir = os.path.join(team_dir, "Offense")
         offense_file = os.path.join(offense_dir, "plays.csv")
 
-        # defense_file= os.path.join(team_dir, "Defense", "plays.csv")
-
-        # os.makedirs(defense_file)
+        defense_dir = os.path.join(team_dir, "Defense")
+        defense_file= os.path.join(defense_dir, "plays.csv")
 
         for _, play in df[df['posteam'] == team].iterrows():
             play = offense_play(play)
             offense_plays.append(play)
         
+        for _, play in df[df['defteam'] == team].iterrows():
+            defense_plays.append(play)
+
         offense_df = pd.DataFrame(offense_plays)
         offense_df.to_csv(offense_file, index=False)
         print(team, " offense pbp CSV saved")
