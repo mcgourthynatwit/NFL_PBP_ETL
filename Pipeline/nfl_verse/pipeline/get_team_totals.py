@@ -44,7 +44,7 @@ def get_team_totals(directory):
                 team_pass_totals['interceptions'] += interception
                 team_pass_totals['completions'] += completion
                 team_pass_totals['attempts'] += attempt
-            if play['play_type'] == 'run' or play['qb_kneel'] == 1:
+            if play['play_type'] == 'run' or play['play_type'] == 'qb_kneel':
                 attempt, rush_yards, touchdown, fumble = get_rush_play_stats(play)
                 team_run_totals['attempts'] += attempt
                 team_run_totals['rush_yards'] += rush_yards
@@ -53,7 +53,7 @@ def get_team_totals(directory):
             
         team_stats.append(team_run_totals)
     
-    sorted_team_stats = sorted(team_stats, key=lambda x: x['touchdowns'], reverse=True)
+    sorted_team_stats = sorted(team_stats, key=lambda x: x['rush_yards'], reverse=True)
 
     for team_stat in sorted_team_stats:
         print(f"{team_stat['team']} : {team_stat['attempts']} attempts for {team_stat['rush_yards']} yards. {team_stat['touchdowns']} touchdowns")
