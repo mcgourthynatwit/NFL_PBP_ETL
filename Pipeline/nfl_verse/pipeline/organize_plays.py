@@ -3,8 +3,8 @@ import os
 import pandas as pd
 from Pipeline.nfl_verse.helpers.get_teams import get_teams
 from Pipeline.nfl_verse.helpers.save_offense_plays import save_offense_plays
+from Pipeline.nfl_verse.helpers.save_defense_plays import save_defensive_plays
 
-#TODO
 def defense_play(play):
     defense_cols = [
         "play_id",
@@ -254,8 +254,12 @@ def organize_plays(directory, df):
         defense_df.to_csv(defense_file, index=False)
         print(team, " defense pbp CSV saved")
 
-        #save_offense_plays(offense_dir)
-        #print(team, " run and pass pbp CSV saved")
+        save_offense_plays(offense_dir)
+        print(team, " run and pass offense pbp CSV saved")
+
+        save_defensive_plays(defense_dir)
+        print(team, " run and pass defense pbp CSV saved")
+
         teams_complete += 1
         print(teams_complete, "/", total_teams, " offensive team plays saved.")
 
