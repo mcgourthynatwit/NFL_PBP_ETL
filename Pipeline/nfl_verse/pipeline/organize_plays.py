@@ -194,6 +194,7 @@ def offense_play(play):
         "passer_player_id",
         "passing_yards",
         "receiver_player_id",
+        "receiver_player_name",
         "receiving_yards",
         "rusher_player_id",
         "rushing_yards",
