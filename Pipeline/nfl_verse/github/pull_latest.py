@@ -47,14 +47,17 @@ def download_release(download_url, file_name):
         f.write(response.content)
     print(f"Downloaded {file_name} successfully.")
 
-owner = "nflverse"
-repo = "nflverse-data"
-file_name = "play_by_play_2024.csv"
-output_file_name = f"Raw_Data/{file_name}"
-update_date, download_url = get_latest_release(owner, repo, file_name)
+def pull_latest_csv():
+    owner = "nflverse"
+    repo = "nflverse-data"
+    file_name = "play_by_play_2024.csv"
+    output_file_name = f"Raw_Data/{file_name}"
+    update_date, download_url = get_latest_release(owner, repo, file_name)
 
-print(update_date)
-update_needed = update_txt(update_date)
+    print(update_date)
+    update_needed = update_txt(update_date)
 
-if update_needed:
-    download_release(download_url, output_file_name)
+    if update_needed:
+        download_release(download_url, output_file_name)
+        return output_file_name
+    return False

@@ -25,7 +25,8 @@ def create_week_folders(week, directory):
 
 def create_team_folders(directory):
     team_directory = os.path.join(directory, "Teams")
-
+    if os.path.exists(team_directory):
+        return
     os.makedirs(team_directory)
 
     offense_subfolders = ['Passing', 'Rushing', 'Conversions']
@@ -49,7 +50,7 @@ def create_folders(year, df):
     print("Creating team folders")
     create_team_folders(directory)
 
-    max_week = get_max_week(df)
+    #max_week = get_max_week(df)
 
-    print("Creating week folders")
-    create_week_folders(max_week, directory)
+    #print("Creating week folders")
+    #create_week_folders(max_week, directory)
