@@ -1,5 +1,6 @@
 # python3 -m Pipeline.nfl_verse.github.pull_latest
 from dotenv import load_dotenv
+import pandas as pd
 import os 
 import requests
 import json
@@ -47,6 +48,15 @@ def download_release(download_url, file_name):
         f.write(response.content)
     print(f"Downloaded {file_name} successfully.")
 
+def add_id(file_name):
+    df = pd.read_csv(file_name, low_memory=False)
+
+    df['play_id_fixed'] = df['old_game_id'].astype(str) + df['play_id'].astype(str)
+    
+    df.to_csv(file_name)
+
+    return 
+
 def pull_latest_csv():
     owner = "nflverse"
     repo = "nflverse-data"
@@ -59,5 +69,7 @@ def pull_latest_csv():
 
     if update_needed:
         download_release(download_url, output_file_name)
+        add_id(output_file_name)
+
         return output_file_name
     return False
