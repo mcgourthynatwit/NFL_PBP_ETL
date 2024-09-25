@@ -6,5 +6,6 @@ Raw_Data/pbp.csv
 Pipeline/nfl_pro
 Pipeline/nfl_verse/test.ipynb
 Pipeline/nfl_verse/github/last_pull.txt
+Pipeline/supabase/query.txt
 test.ipynb
 .env
