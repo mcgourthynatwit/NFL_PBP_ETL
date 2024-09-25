@@ -1,7 +1,8 @@
-import pandas as pd
-import os
-from dotenv import load_dotenv
 from supabase import create_client, Client
+import numpy as np 
+import pandas as pd 
+from dotenv import load_dotenv
+import os, math
 
 load_dotenv()
 
@@ -11,20 +12,8 @@ SUPABASE_API_KEY = os.getenv('SUPABASE_KEY')
 supabase = create_client(SUPABASE_URL, SUPABASE_API_KEY)
 
 TABLE_NAME = 'general_team_offense_pbp'
+
 csv_path = "Raw_Data/play_by_play_2024.csv"
-
-df = pd.read_csv(csv_path, low_memory=False)
-
-# Function to map pandas dtypes to PostgreSQL types
-def get_pg_type(dtype):
-    if 'int' in str(dtype):
-        return 'integer'
-    elif 'float' in str(dtype):
-        return 'float'
-    elif 'datetime' in str(dtype):
-        return 'timestamp'
-    else:
-        return 'text'
 
 general_offense_pbp_cols = [
         "play_id",
@@ -110,15 +99,38 @@ general_offense_pbp_cols = [
         "wind"
     ]
 
+df = pd.read_csv(csv_path, low_memory=False)
 df = df[general_offense_pbp_cols]
 
-columns = ',\n    '.join([f"\"{col}\" {get_pg_type(df[col].dtype)}" for col in df.columns])
-create_table_query = f"""
-CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
-    id SERIAL PRIMARY KEY,
-    {columns}
-);
-"""
+# Function to map pandas dtypes to PostgreSQL types
+def get_pg_type(dtype):
+    if 'int' in str(dtype):
+        return 'integer'
+    elif 'float' in str(dtype):
+        return 'float'
+    elif 'datetime' in str(dtype):
+        return 'timestamp'
+    else:
+        return 'text'
 
-with open('Pipeline/supabase/query.txt', 'w') as file:
-    file.write(create_table_query)
+def handle_nan(value):
+    if isinstance(value, (float, np.float64)) and (np.isnan(value) or math.isnan(value)):
+        return None
+    return value
+
+def json_serializable(item):
+    try:
+        json.dumps(item)
+        return item
+    except:
+        return str(item)
+
+df = df.map(handle_nan)
+
+data = df.map(json_serializable).to_dict('records')
+
+
+response = supabase.table(TABLE_NAME).upsert(
+    data, 
+    on_conflict=['play_id_fixed']
+).execute()
