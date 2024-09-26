@@ -15,6 +15,7 @@ teams_dir = f"Clean_Data/{year}/Teams"
 #df = nfl.import_pbp_data(years=[year], downcast=False, columns=list(cols))
 csv_pulled = pull_latest_csv()
 
+
 if csv_pulled != False: 
     df = pd.read_csv(f'Raw_Data/play_by_play_{year}.csv', low_memory=False)
 
@@ -24,5 +25,5 @@ if csv_pulled != False:
     print("Sorting plays")
     organize_plays(teams_dir, df)
 
-#get_team_totals(teams_dir)
+get_team_totals(teams_dir)
 

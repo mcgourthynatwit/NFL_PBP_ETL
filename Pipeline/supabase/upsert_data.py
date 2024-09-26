@@ -102,20 +102,9 @@ general_offense_pbp_cols = [
 df = pd.read_csv(csv_path, low_memory=False)
 df = df[general_offense_pbp_cols]
 
-# Function to map pandas dtypes to PostgreSQL types
-def get_pg_type(dtype):
-    if 'int' in str(dtype):
-        return 'integer'
-    elif 'float' in str(dtype):
-        return 'float'
-    elif 'datetime' in str(dtype):
-        return 'timestamp'
-    else:
-        return 'text'
-
 def handle_nan(value):
     if isinstance(value, (float, np.float64)) and (np.isnan(value) or math.isnan(value)):
-        return None
+        return 0
     return value
 
 def json_serializable(item):

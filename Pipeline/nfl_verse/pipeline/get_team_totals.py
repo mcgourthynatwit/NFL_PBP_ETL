@@ -12,7 +12,7 @@ def get_team_totals(directory):
     team_stats = []
     for team in teams:
         team_dir = os.path.join(directory, team)
-        offense_play_dir = os.path.join(team_dir, "Offense4", "plays.csv")
+        offense_play_dir = os.path.join(team_dir, "Offense", "plays.csv")
 
         offense_plays = pd.read_csv(offense_play_dir)
         team_pass_totals = {

@@ -18,9 +18,9 @@ df = pd.read_csv(csv_path, low_memory=False)
 # Function to map pandas dtypes to PostgreSQL types
 def get_pg_type(dtype):
     if 'int' in str(dtype):
-        return 'integer'
+        return 'integer NOT NULL DEFAULT 0'
     elif 'float' in str(dtype):
-        return 'float'
+        return 'float NOT NULL DEFAULT 0'
     elif 'datetime' in str(dtype):
         return 'timestamp'
     else:

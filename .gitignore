@@ -9,3 +9,4 @@ Pipeline/nfl_verse/github/last_pull.txt
 Pipeline/supabase/query.txt
 test.ipynb
 .env
+Pipeline/.DS_Store
