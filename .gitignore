@@ -10,3 +10,6 @@ Pipeline/supabase/query.txt
 test.ipynb
 .env
 Pipeline/.DS_Store
+Pipeline/Tests/pfr_scrapers/
+Pipeline/Tests/test_data/
+Pipeline/Tests/pfr_scrapers/get_team_offense.py
