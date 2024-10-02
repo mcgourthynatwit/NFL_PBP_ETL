@@ -8,11 +8,13 @@ from Pipeline.nfl_verse.pipeline.create_folders import get_max_week
 from Pipeline.nfl_verse.pipeline.organize_plays import organize_plays
 from Pipeline.nfl_verse.pipeline.get_team_totals import get_team_totals
 from Pipeline.nfl_verse.github.pull_latest import pull_latest_csv
+from Pipeline.Tests.test_suite.team.offense.test_team_offense import test_team_offense
 year = 2024
 teams_dir = f"Clean_Data/{year}/Teams"
 
 #print("Importing pbp data...")
 #df = nfl.import_pbp_data(years=[year], downcast=False, columns=list(cols))
+'''
 csv_pulled = pull_latest_csv()
 
 
@@ -25,5 +27,8 @@ if csv_pulled != False:
     print("Sorting plays")
     organize_plays(teams_dir, df)
 
-get_team_totals(teams_dir)
+# get_team_totals(teams_dir)
 
+'''
+
+test_team_offense()

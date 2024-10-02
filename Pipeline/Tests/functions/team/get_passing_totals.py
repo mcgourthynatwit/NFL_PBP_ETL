@@ -53,9 +53,15 @@ def get_raw_passing_totals(raw_df):
                 team_passing['attempts'] += play['pass_attempt']
                 team_passing['int'] += play['interception']
                 team_passing['completions'] += play['complete_pass']
-                team_passing['yards'] += play['yards_gained']
                 team_passing['first_down'] += play['first_down_pass']
-                
+
+                if pd.isna(play['passing_yards']):
+                    passing_yards = 0
+                else:
+                    passing_yards = play['passing_yards']
+
+                team_passing['yards'] += passing_yards
+
                 # Not counting fumble or pick sixes for other team
                 if not(play['interception'] or play['fumble']):
                     team_passing['td'] += play['touchdown']
@@ -63,7 +69,8 @@ def get_raw_passing_totals(raw_df):
             # Subtract one, if the play is a sack then the qb did not throw the ball
             if play['sack'] == 1:
                 team_passing['attempts'] -= 1
-
+                team_passing['yards'] += play['yards_gained']
+                
         team_passing_stats.append(team_passing)
     return team_passing_stats
 

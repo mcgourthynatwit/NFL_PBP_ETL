@@ -13,3 +13,10 @@ Pipeline/.DS_Store
 Pipeline/Tests/pfr_scrapers/
 Pipeline/Tests/test_data/
 Pipeline/Tests/pfr_scrapers/get_team_offense.py
+.DS_Store
+Pipeline/.DS_Store
+
+__pycache__/
+*.py[cod]
+*$py.class
+
